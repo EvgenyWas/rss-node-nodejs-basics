@@ -1,6 +1,13 @@
+import path from "node:path";
+import cp from "child_process";
+
 const spawnChildProcess = async (args) => {
-    // Write your code here
+  const __dirname = import.meta.dirname;
+  const childPath = path.resolve(__dirname, "files", "script.js");
+  const child = cp.fork(childPath, args, { stdio: "pipe" });
+
+  process.stdin.pipe(child.stdin);
+  child.stdout.pipe(process.stdout);
 };
 
-// Put your arguments in function call to test this functionality
-spawnChildProcess( /* [someArgument1, someArgument2, ...] */);
+spawnChildProcess(["it", "is", "child", "process"]);
